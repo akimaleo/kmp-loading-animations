@@ -2,13 +2,6 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-//plugins {
-//    alias(libs.plugins.kotlinMultiplatform)
-//    alias(libs.plugins.composeMultiplatform)
-//    alias(libs.plugins.composeCompiler)
-//    alias(libs.plugins.composeHotReload)
-//}
-
 plugins {
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.kotlinMultiplatform)
@@ -22,7 +15,7 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
         experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -32,20 +25,20 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm()
-    
+
     js {
         browser()
         binaries.executable()
     }
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
     }
-    
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.jetpackLoading)
@@ -55,6 +48,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.lifecycle.runtimeCompose)
         }
         jvmMain.dependencies {

@@ -43,3 +43,7 @@ android {
         }
     }
 }
+dependencies {
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.ui.tooling)
+}

@@ -1,4 +1,4 @@
-package com.example.jetpackloading.ui.theme
+package com.kawa.loading.kmp.app.theme
 
 import android.app.Activity
 import android.os.Build
@@ -14,12 +14,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.kawa.loading.kmp.app.theme.Pink40
-import com.kawa.loading.kmp.app.theme.Pink80
-import com.kawa.loading.kmp.app.theme.Purple40
-import com.kawa.loading.kmp.app.theme.Purple80
-import com.kawa.loading.kmp.app.theme.PurpleGrey40
-import com.kawa.loading.kmp.app.theme.PurpleGrey80
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -31,16 +25,6 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
 )
 
 @Composable

@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.roborazzi)
 }
 kotlin {
     android {
@@ -54,11 +53,6 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
-        }
-        jvmTest.dependencies {
-            implementation(libs.roborazzi.compose.desktop)
-            implementation(libs.junit)
-            implementation(kotlin("test"))
         }
     }
 }

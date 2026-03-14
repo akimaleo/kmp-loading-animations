@@ -16,11 +16,9 @@ and rebuilt from the ground up with Kotlin Multiplatform + Compose.
 ## Demo
 
 <p align="center">
-  <img src="screenshots/animationrec.gif" alt="Loading Showcase" width="320" />
+  <img src="screenshots/screenshot.gif" alt="Loading Showcase" width="320" />
 </p>
 
-> The GIF above is **auto-generated** by Roborazzi.
-> Run `./gradlew :composeApp:jvmTest` to re-record it locally.
 
 ---
 
@@ -93,20 +91,6 @@ Additional indicators: `GridFadeDiagonal`, `GridFadeAntiDiagonal`,
 
 ---
 
-## Automated Screenshot Recording
-
-This project uses **[Roborazzi](https://github.com/takahirom/roborazzi)**
-to generate the showcase GIF from a Compose test — no emulator required.
-
-```bash
-# Record the GIF via JVM desktop test
-./gradlew :composeApp:jvmTest
-```
-
-A GitHub Actions workflow (`.github/workflows/screenshots.yml`) runs this
-automatically on every push to `main` and commits the result back.
-
----
 
 ## Targets
 

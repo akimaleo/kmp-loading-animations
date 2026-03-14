@@ -1,6 +1,5 @@
 package com.kawa.loading.kmp
 
-import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import com.kawa.loading.kmp.components.indicators.BallBeatIndicator
 import com.kawa.loading.kmp.components.indicators.BallClipRotateMultipleIndicator

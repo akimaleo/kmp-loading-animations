@@ -16,7 +16,6 @@ kotlin {
     dependencies {
         implementation(project(":composeApp"))
 
-        implementation(libs.androidx.core.ktx)
         implementation(libs.androidx.activity.compose)
         implementation(libs.compose.material3)
     }
@@ -44,6 +43,5 @@ android {
     }
 }
 dependencies {
-    implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.ui.tooling)
 }

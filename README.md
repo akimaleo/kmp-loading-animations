@@ -1,147 +1,139 @@
-![Image Alt Text](screenshots/header.png)
+<p align="center">
+  <img src="screenshots/header.png" alt="KMP Loading Animation" />
+</p>
 
-# JetpackLoading
+# KMP Loading Animation
 
-JetpackLoading is a collection of nice loading animations in Jetpack Compose, adapted from the famous [AVLoadingIndicatorView](https://github.com/HarlonWang/AVLoadingIndicatorView) library.
+A collection of beautiful, ready-to-use loading & spinner animations for
+**Compose Multiplatform** — Android, iOS, Desktop (JVM), and Web.
 
-See the animations in the [Demo](https://github.com/MahboubehSeyedpour/JetpackLoading#demo) section and their use in [Usage](https://github.com/MahboubehSeyedpour/JetpackLoading#usage)
+Adapted from the famous
+[AVLoadingIndicatorView](https://github.com/HarlonWang/AVLoadingIndicatorView)
+and rebuilt from the ground up with Kotlin Multiplatform + Compose.
 
-
+---
 
 ## Demo
-Indicators #1                                                                |  Indicators #2
-:---------------------------------------------------------------------------:|:-----------------------------------------------------------------------------:
-<img src="screenshots/screenshot.gif" alt="GIF 1" width="300" height="600">  |  <img src="screenshots/screenshot_1.gif" alt="GIF 1" width="300" height="600">
 
+<p align="center">
+  <img src="screenshots/animationrec.gif" alt="Loading Showcase" width="320" />
+</p>
 
+> The GIF above is **auto-generated** by Roborazzi.
+> Run `./gradlew :composeApp:jvmTest` to re-record it locally.
 
-## Usage
+---
 
-- #### Step 1
-  Add it in settings.gradle:
-  
-  ```bash
-  allprojects {
+## Installation
+
+### Step 1 — Add the JitPack repository
+
+```kotlin
+// settings.gradle.kts
+dependencyResolutionManagement {
     repositories {
-      ...
-      maven { url 'https://jitpack.io' }
+        maven { url = uri("https://jitpack.io") }
     }
-  }
-  
-   
-- #### Step 2
-  Add the dependency
-  
-  ```bash
-  dependencies {
-	implementation 'com.github.MahboubehSeyedpour:jetpack-loading:1.1.0'
-  }
-  
-   
-- #### Step 3  
-  It's very simple to use. Just add component where you want
-  ```bash
-   @Composable
-   fun Greeting() {
-       ...
-       PacmanIndicator()
-       ...
-   }
-  ```
-  
-  You can also control the details of the animations using parameters
-  ```bash
-   @Composable
-   fun Greeting() {
-       ...
-       PacmanIndicator(color = Color.Black, ballDiameter = 60f, canvasSize = 60.dp, animationDuration = 1000)
-       ...
-   }
-  ```
+}
+```
 
-Enjoy JetpackLoading 😊
-  
-##  Indicators
+### Step 2 — Add the dependency
 
-The indicators are as follows:
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("com.github.akimaleo:kmp-loading-animations:1.0.0")
+}
+```
 
-1. Indicators #1
-   
-	Row 1
- 	- `PulsatingDot`
- 	- `GridPulsatingDot`
- 	- `CircularPulsatingIndicator`
- 	- `BallClipRotatePulseIndicator`
+### Step 3 — Use any indicator
 
- 	Row 2
- 	- `SquareSpinIndicator`
- 	- `BallClipRotateMultipleIndicator`
- 	- `BallPulseRiseIndicator`
- 	- `BallRotateIndicator`
+```kotlin
+@Composable
+fun Greeting() {
+    PacmanIndicator()
+}
+```
 
-  	Row 3
- 	- `CubeTransitionIndicator`
- 	- `BallZigZagIndicator`
- 	- `BallZigZagDeflectIndicator`
- 	- `BallTrianglePathIndicator`
+Every indicator exposes optional parameters for full customisation:
 
-	Row 4
-	- `BallScaleIndicator`
- 	- `LineScaleIndicator`
- 	- `LineScaleIndicator`
- 	- `BallScaleMultipleIndicator`
+```kotlin
+PacmanIndicator(
+    color = Color.Black,
+    ballDiameter = 60f,
+    canvasSize = 60.dp,
+    animationDuration = 1000
+)
+```
 
-	Row 5
- 	- `BallPulseSyncIndicator`
- 	- `BallBeatIndicator`
- 	- `LineScaleIndicator`
- 	- `LineScaleIndicator`
+---
 
- 	Row 6
- 	- `BallScaleRippleIndicator`
- 	- `BallScaleRippleMultipleIndicator`
- 	- `BallSpinFadeLoaderIndicator`
- 	- `LineSpinFadeLoaderIndicator`
+## Available Indicators
 
-  	Row 7
- 	- `TriangleSpinIndicator`
- 	- `PacmanIndicator`
- 	- `BallGridBeatIndicator`
- 	- `SemiCircleSpinIndicator`
+| # | Indicator | # | Indicator |
+|---|-----------|---|-----------|
+| 1 | `PulsatingDot` | 15 | `LineScaleIndicator` (random) |
+| 2 | `GridIndicator` (pulsating) | 16 | `BallScaleMultipleIndicator` |
+| 3 | `CircularPulsatingIndicator` | 17 | `BallPulseSyncIndicator` |
+| 4 | `BallClipRotatePulseIndicator` | 18 | `BallBeatIndicator` |
+| 5 | `SquareSpinIndicator` | 19 | `LineScaleIndicator` (symmetric) |
+| 6 | `BallClipRotateMultipleIndicator` | 20 | `LineScaleIndicator` (pulse-out) |
+| 7 | `BallPulseRiseIndicator` | 21 | `BallScaleRippleIndicator` |
+| 8 | `BallRotateIndicator` | 22 | `BallScaleRippleMultipleIndicator` |
+| 9 | `CubeTransitionIndicator` | 23 | `BallSpinFadeLoaderIndicator` |
+| 10 | `BallZigZagIndicator` | 24 | `LineSpinFadeLoaderIndicator` |
+| 11 | `BallZigZagDeflectIndicator` | 25 | `TriangleSpinIndicator` |
+| 12 | `BallTrianglePathIndicator` | 26 | `PacmanIndicator` |
+| 13 | `BallScaleIndicator` | 27 | `GridIndicator` (beating) |
+| 14 | `LineScaleIndicator` (accordion) | 28 | `SemiCircleSpinIndicator` |
 
+Additional indicators: `GridFadeDiagonal`, `GridFadeAntiDiagonal`,
+`BallRespectivelyExitIndicator`, `TriangleShapeIndicator`,
+`CircleShapeIndicator`.
 
-2. Indicators #2
-   
-	Row 1
- 	- `GridFadeDiagonal`
- 	- `GridFadeAntiDiagonal`
- 	- `BallRespectivelyExitIndicator`
- 	- `TriangleShapeIndicator`
+---
 
- 	Row 2
- 	- `CircleShapeIndicator`
+## Automated Screenshot Recording
 
+This project uses **[Roborazzi](https://github.com/takahirom/roborazzi)**
+to generate the showcase GIF from a Compose test — no emulator required.
 
-## 🔗 Contact
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mahboubehseyedpour)
+```bash
+# Record the GIF via JVM desktop test
+./gradlew :composeApp:jvmTest
+```
 
-[![GMail](https://img.shields.io/badge/gmail-1DA1F2?style=for-the-badge&logo=gmail&logoColor=Red)](mailto:https://www.linkedin.com/in/mahboubehseyedpour)
+A GitHub Actions workflow (`.github/workflows/screenshots.yml`) runs this
+automatically on every push to `main` and commits the result back.
 
+---
+
+## Targets
+
+| Platform | Status |
+|----------|--------|
+| Android  | ✅ |
+| iOS      | ✅ |
+| Desktop (JVM) | ✅ |
+| Web (JS) | ✅ |
+| Web (Wasm) | ✅ |
+
+---
 
 ## License
 
 ```
 Copyright 2023 Mahboubeh Seyedpour
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```

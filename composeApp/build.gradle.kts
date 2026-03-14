@@ -1,15 +1,15 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.roborazzi)
 }
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.kawa.loading.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -41,7 +41,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.jetpackLoading)
+            implementation(projects.kmpLoadingAnimation)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
@@ -54,6 +54,11 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+        }
+        jvmTest.dependencies {
+            implementation(libs.roborazzi.compose.desktop)
+            implementation(libs.junit)
+            implementation(kotlin("test"))
         }
     }
 }

@@ -7,7 +7,11 @@ plugins {
     alias(libs.plugins.androidLint)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    `maven-publish`
 }
+
+group = "com.github.akimaleo"
+version = "1.0.0"
 
 kotlin {
     android {

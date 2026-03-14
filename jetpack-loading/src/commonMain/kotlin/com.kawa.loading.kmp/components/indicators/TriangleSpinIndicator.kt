@@ -1,29 +1,28 @@
 package com.kawa.loading.kmp.components.indicators
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kawa.loading.kmp.enums.RotationAxis
 import com.kawa.loading.kmp.enums.TriangleCardFace
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlin.math.sqrt
 
 @Composable
@@ -31,42 +30,37 @@ fun TriangleSpinIndicator(
     color: Color = Color.White,
     animationDelay: Int = 850
 ) {
-
     var cardFace by remember { mutableStateOf(TriangleCardFace.AxisY) }
-    val transition = rememberInfiniteTransition()
-    val coroutineScope = rememberCoroutineScope()
+    val rotation = remember { Animatable(cardFace.initValue) }
 
-    LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            while (true) {
-                delay(animationDelay.toLong())
-                cardFace = cardFace.next
-            }
+    LaunchedEffect(animationDelay) {
+        while (true) {
+            rotation.animateTo(
+                targetValue = cardFace.targetValue,
+                animationSpec = tween(
+                    durationMillis = animationDelay,
+                    easing = FastOutSlowInEasing,
+                )
+            )
+            val nextFace = cardFace.next
+            rotation.snapTo(nextFace.initValue)
+            cardFace = nextFace
         }
     }
 
-    val rotation by transition.animateFloat(
-        initialValue = cardFace.initValue,
-        targetValue = cardFace.targetValue,
-        animationSpec = infiniteRepeatable(
-            tween(
-                durationMillis = animationDelay,
-                easing = FastOutSlowInEasing,
-            )
-        )
-    )
+    val rotationValue = rotation.value
 
     val rX = when (cardFace.axis) {
         RotationAxis.AxisY -> 0f
-        RotationAxis.AxisX -> rotation
-        RotationAxis.AAxisY -> -180f // The rotation in this part takes place around the axis of the Y, and the direction is -180 relative to the axis of the X (the image is upside down).
-        RotationAxis.AAxisX -> rotation
+        RotationAxis.AxisX -> rotationValue
+        RotationAxis.AAxisY -> -180f
+        RotationAxis.AAxisX -> rotationValue
     }
 
     val rY = when (cardFace.axis) {
-        RotationAxis.AxisY -> rotation
+        RotationAxis.AxisY -> rotationValue
         RotationAxis.AxisX -> 0f
-        RotationAxis.AAxisY -> rotation
+        RotationAxis.AAxisY -> rotationValue
         RotationAxis.AAxisX -> 0f
     }
 
@@ -86,15 +80,28 @@ fun TriangleSpinIndicator(
 private fun DrawScope.drawTriangle(color: Color) {
     val path = Path()
     val sideLength = size.width
-    val height = (sideLength * sqrt(3.0) / 2).toFloat()
+    val triangleHeight = (sideLength * sqrt(3.0) / 2).toFloat()
+    val verticalOffset = (size.height - triangleHeight) / 2f
 
-    path.moveTo(0f, height)
-    path.lineTo(sideLength, height)
-    path.lineTo(sideLength / 2, 0f)
+    path.moveTo(sideLength / 2f, verticalOffset)
+    path.lineTo(0f, triangleHeight + verticalOffset)
+    path.lineTo(sideLength, triangleHeight + verticalOffset)
     path.close()
 
     drawPath(
         path = path,
-        color = color // Set the desired fill color
+        color = color
     )
+}
+
+@Preview
+@Composable
+fun TriangleSpinIndicatorPreview() {
+    Box(
+        modifier = Modifier
+            .background(Color.Gray)
+            .padding(20.dp)
+    ) {
+        TriangleSpinIndicator()
+    }
 }

@@ -14,7 +14,7 @@ kotlin {
     }
 
     dependencies {
-        implementation(project(":jetpack-loading"))
+        implementation(project(":composeApp"))
 
         implementation(libs.androidx.core.ktx)
         implementation(libs.androidx.activity.compose)

@@ -36,4 +36,5 @@ plugins {
 }
 
 include(":androidApp")
+include(":composeApp")
 include(":jetpack-loading")

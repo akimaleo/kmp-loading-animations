@@ -39,10 +39,30 @@ dependencyResolutionManagement {
 
 ### Step 2 — Add the dependency
 
+#### Option A — Version catalog (TOML)
+
+```toml
+# gradle/libs.versions.toml
+[versions]
+kmp-loading = "2.0.3"
+
+[libraries]
+kmp-loading-animation = { module = "com.github.akimaleo:kmp-loading-animations", version.ref = "kmp-loading" }
+```
+
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.akimaleo:kmp-loading-animations:2.0.2")
+    implementation(libs.kmp.loading.animation)
+}
+```
+
+#### Option B — Direct dependency
+
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("com.github.akimaleo:kmp-loading-animations:2.0.3")
 }
 ```
 
@@ -93,6 +113,98 @@ Additional indicators: `GridFadeDiagonal`, `GridFadeAntiDiagonal`,
 
 ---
 
+## Catalog API
+
+The `indicatorsCatalog()` function returns a
+`Map<IndicatorType, @Composable () -> Unit>` — a **linked map** that preserves
+insertion order. Use it to look up a specific indicator by key, iterate over all
+entries, or pick one at random.
+
+```kotlin
+import com.kawa.loading.kmp.indicatorsCatalog
+import com.kawa.loading.kmp.enums.IndicatorType
+```
+
+### Get all indicators with default settings
+
+```kotlin
+val catalog = indicatorsCatalog()          // white, 40.dp
+```
+
+### Custom color and size
+
+```kotlin
+val catalog = indicatorsCatalog(
+    color = Color.Cyan,
+    sizeDp = 60.dp
+)
+```
+
+### Pick a specific indicator by type
+
+```kotlin
+@Composable
+fun MyScreen() {
+    // Direct map access — no searching required
+    indicatorsCatalog()[IndicatorType.PACMAN]?.invoke()
+}
+```
+
+### Show a random loading indicator
+
+```kotlin
+@Composable
+fun RandomLoader() {
+    val catalog = remember { indicatorsCatalog(color = Color.White) }
+    val (type, indicator) = remember { catalog.entries.random() }
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        indicator()
+        Text(type.displayName)
+    }
+}
+```
+
+### Iterate over all indicators
+
+```kotlin
+@Composable
+fun ListAll() {
+    val catalog = indicatorsCatalog()
+    catalog.forEach { (type, indicator) ->
+        Row {
+            indicator()
+            Text(type.displayName)
+        }
+    }
+}
+```
+
+### Display the full showcase grid
+
+```kotlin
+@Composable
+fun App() {
+    LoadingShowcase()   // adaptive grid with labels
+}
+```
+
+### Available `IndicatorType` values
+
+```
+PULSATING_DOT, GRID_PULSATING, CIRCULAR_PULSATING,
+BALL_CLIP_ROTATE_PULSE, SQUARE_SPIN, BALL_CLIP_ROTATE_MULTIPLE,
+BALL_PULSE_RISE, BALL_ROTATE, CUBE_TRANSITION,
+BALL_ZIG_ZAG, BALL_ZIG_ZAG_DEFLECT, BALL_TRIANGLE_PATH,
+BALL_SCALE, LINE_SCALE_ACCORDION, LINE_SCALE_RANDOM,
+BALL_SCALE_MULTIPLE, BALL_PULSE_SYNC, BALL_BEAT,
+LINE_SCALE_SYMMETRIC, LINE_SCALE_PULSE_OUT,
+BALL_SCALE_RIPPLE, BALL_SCALE_RIPPLE_MULTIPLE,
+BALL_SPIN_FADE_LOADER, LINE_SPIN_FADE_LOADER,
+TRIANGLE_SPIN, PACMAN, GRID_BEAT, SEMI_CIRCLE_SPIN
+```
+
+---
 
 ## Targets
 

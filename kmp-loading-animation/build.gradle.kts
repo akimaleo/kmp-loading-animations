@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.github.akimaleo"
-version = "2.0.2"
+version = "2.0.3"
 
 kotlin {
     android {

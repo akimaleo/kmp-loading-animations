@@ -58,7 +58,8 @@ private fun optimalGrid(
 @Preview
 @Composable
 fun LoadingShowcase() {
-    val indicators = indicatorsCatalog()
+    val catalog = indicatorsCatalog()
+    val entries = catalog.entries.toList()
 
     BoxWithConstraints(
         modifier = Modifier
@@ -66,7 +67,7 @@ fun LoadingShowcase() {
             .background(MaterialTheme.colorScheme.primary)
     ) {
         val (cols, rows) = optimalGrid(
-            itemCount = indicators.size,
+            itemCount = entries.size,
             width = maxWidth,
             height = maxHeight
         )
@@ -106,8 +107,8 @@ fun LoadingShowcase() {
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            if (index < indicators.size) {
-                                val (type, indicator) = indicators[index]
+                            if (index < entries.size) {
+                                val (type, indicator) = entries[index]
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.Center

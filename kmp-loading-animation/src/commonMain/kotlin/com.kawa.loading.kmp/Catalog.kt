@@ -37,10 +37,10 @@ private val DEFAULT_SIZE = 40.dp
 fun indicatorsCatalog(
     color: Color = Color.White,
     sizeDp: Dp = DEFAULT_SIZE
-): List<Pair<IndicatorType, @Composable () -> Unit>> {
+): Map<IndicatorType, @Composable () -> Unit> {
     val scale = sizeDp / DEFAULT_SIZE
 
-    return listOf(
+    return linkedMapOf(
         IndicatorType.PULSATING_DOT to { PulsatingDot(color = color, ballDiameter = 40f * scale, horizontalSpace = 20f * scale) },
         IndicatorType.GRID_PULSATING to { GridIndicator(color = color, ballDiameter = 40f * scale, verticalSpace = 20f * scale, horizontalSpace = 20f * scale, animationType = GridAnimationType.PULSATING) },
         IndicatorType.CIRCULAR_PULSATING to { CircularPulsatingIndicator(color = color, canvasSize = 80f * scale) },

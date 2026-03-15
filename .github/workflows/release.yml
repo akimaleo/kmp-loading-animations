@@ -13,6 +13,8 @@ jobs:
   release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.tag.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,3 +52,47 @@ jobs:
           prerelease: ${{ contains(steps.tag.outputs.version, '-') }}
           generate_release_notes: true
 
+  publish:
+    name: Publish to Maven Central
+    needs: release
+    # Use macOS to build ALL targets including iOS
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build library
+        run: ./gradlew :kmp-loading-animation:assemble --no-configuration-cache
+
+      - name: Publish to Maven Central
+        run: ./gradlew :kmp-loading-animation:publishAllPublicationsToMavenCentralRepository --no-configuration-cache
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+
+      - name: Summary
+        run: |
+          echo "## ✅ Published to Maven Central" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Version: \`${{ needs.release.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Go to [Sonatype OSS](https://s01.oss.sonatype.org/)" >> $GITHUB_STEP_SUMMARY
+          echo "2. Log in → Staging Repositories" >> $GITHUB_STEP_SUMMARY
+          echo "3. Close and Release the repository" >> $GITHUB_STEP_SUMMARY

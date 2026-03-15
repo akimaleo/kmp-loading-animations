@@ -2,7 +2,7 @@
   <img src="screenshots/header.png" alt="KMP Loading Animation" />
 </p>
 
-[![](https://jitpack.io/v/akimaleo/kmp-loading-animations.svg)](https://jitpack.io/#akimaleo/kmp-loading-animations)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.akimaleo/kmp-loading-animation)](https://central.sonatype.com/artifact/io.github.akimaleo/kmp-loading-animation)
 
 # KMP Loading Animation
 
@@ -26,47 +26,22 @@ and rebuilt from the ground up with Kotlin Multiplatform + Compose.
 
 ## Installation
 
-### Step 1 — Add the JitPack repository
+Add the dependency to your `commonMain` source set:
 
 ```kotlin
-// settings.gradle.kts
-dependencyResolutionManagement {
-    repositories {
-        maven { url = uri("https://jitpack.io") }
+// build.gradle.kts
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("io.github.akimaleo:kmp-loading-animation:2.0.4")
+        }
     }
 }
 ```
 
-### Step 2 — Add the dependency
+That's it! Works on **all platforms**: Android, iOS, Desktop, JS, and WasmJS.
 
-#### Option A — Version catalog (TOML)
-
-```toml
-# gradle/libs.versions.toml
-[versions]
-kmp-loading = "2.0.3"
-
-[libraries]
-kmp-loading-animation = { module = "com.github.akimaleo:kmp-loading-animations", version.ref = "kmp-loading" }
-```
-
-```kotlin
-// build.gradle.kts
-dependencies {
-    implementation(libs.kmp.loading.animation)
-}
-```
-
-#### Option B — Direct dependency
-
-```kotlin
-// build.gradle.kts
-dependencies {
-    implementation("com.github.akimaleo:kmp-loading-animations:2.0.3")
-}
-```
-
-### Step 3 — Use any indicator
+### Step 1 — Use any indicator
 
 ```kotlin
 @Composable

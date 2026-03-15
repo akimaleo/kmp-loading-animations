@@ -4,7 +4,9 @@ jdk:
 before_install:
   - sdk install java 21.0.2-open
   - sdk use java 21.0.2-open
+  # Remove JetBrains vendor requirement — JitPack can't unpack it
+  - echo "toolchainVersion=21" > gradle/gradle-daemon-jvm.properties
 
 install:
-  - ./gradlew :kmp-loading-animation:publishToMavenLocal
+  - ./gradlew :kmp-loading-animation:publishToMavenLocal -Dorg.gradle.java.installations.auto-detect=true -Dorg.gradle.java.installations.auto-download=false
 

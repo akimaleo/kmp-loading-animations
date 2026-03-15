@@ -40,7 +40,7 @@ dependencyResolutionManagement {
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.akimaleo:kmp-loading-animations:1.0.0")
+    implementation("com.github.akimaleo:kmp-loading-animations:2.0.0")
 }
 ```
 

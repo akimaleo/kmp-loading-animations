@@ -10,5 +10,4 @@ plugins {
 
 allprojects {
     group = "com.github.akimaleo"
-    version = version
 }

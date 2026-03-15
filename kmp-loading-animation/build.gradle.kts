@@ -38,14 +38,13 @@ kotlin {
 
     js {
         browser()
-        binaries.executable()
     }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
-        binaries.executable()
     }
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlin.stdlib)
@@ -70,6 +69,37 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+        }
+    }
+}
+
+publishing {
+    publications.withType<MavenPublication> {
+        pom {
+            name.set("KMP Loading Animations")
+            description.set("Kotlin Multiplatform loading indicator animations for Compose")
+            url.set("https://github.com/akimaleo/kmp-loading-animations")
+
+            licenses {
+                license {
+                    name.set("The Apache License, Version 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+            }
+
+            developers {
+                developer {
+                    id.set("akimaleo")
+                    name.set("akimaleo")
+                    url.set("https://github.com/AkimAleo")
+                }
+            }
+
+            scm {
+                url.set("https://github.com/akimaleo/kmp-loading-animations")
+                connection.set("scm:git:git://github.com/akimaleo/kmp-loading-animations.git")
+                developerConnection.set("scm:git:ssh://git@github.com/akimaleo/kmp-loading-animations.git")
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
   <img src="screenshots/header.png" alt="KMP Loading Animation" />
 </p>
 
+[![](https://jitpack.io/v/akimaleo/kmp-loading-animations.svg)](https://jitpack.io/#akimaleo/kmp-loading-animations)
 
 # KMP Loading Animation
 

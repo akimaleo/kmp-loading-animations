@@ -1,0 +1,33 @@
+package com.kawa.loading.kmp.enums
+
+enum class IndicatorType(val displayName: String) {
+    PULSATING_DOT("PulsatingDot"),
+    GRID_PULSATING("GridPulsating"),
+    CIRCULAR_PULSATING("CircularPulsating"),
+    BALL_CLIP_ROTATE_PULSE("BallClipRotatePulse"),
+    SQUARE_SPIN("SquareSpin"),
+    BALL_CLIP_ROTATE_MULTIPLE("BallClipRotateMultiple"),
+    BALL_PULSE_RISE("BallPulseRise"),
+    BALL_ROTATE("BallRotate"),
+    CUBE_TRANSITION("CubeTransition"),
+    BALL_ZIG_ZAG("BallZigZag"),
+    BALL_ZIG_ZAG_DEFLECT("BallZigZagDeflect"),
+    BALL_TRIANGLE_PATH("BallTrianglePath"),
+    BALL_SCALE("BallScale"),
+    LINE_SCALE_ACCORDION("LineScaleAccordion"),
+    LINE_SCALE_RANDOM("LineScaleRandom"),
+    BALL_SCALE_MULTIPLE("BallScaleMultiple"),
+    BALL_PULSE_SYNC("BallPulseSync"),
+    BALL_BEAT("BallBeat"),
+    LINE_SCALE_SYMMETRIC("LineScaleSymmetric"),
+    LINE_SCALE_PULSE_OUT("LineScalePulseOut"),
+    BALL_SCALE_RIPPLE("BallScaleRipple"),
+    BALL_SCALE_RIPPLE_MULTIPLE("BallScaleRippleMultiple"),
+    BALL_SPIN_FADE_LOADER("BallSpinFadeLoader"),
+    LINE_SPIN_FADE_LOADER("LineSpinFadeLoader"),
+    TRIANGLE_SPIN("TriangleSpin"),
+    PACMAN("Pacman"),
+    GRID_BEAT("GridBeat"),
+    SEMI_CIRCLE_SPIN("SemiCircleSpin"),
+}
+

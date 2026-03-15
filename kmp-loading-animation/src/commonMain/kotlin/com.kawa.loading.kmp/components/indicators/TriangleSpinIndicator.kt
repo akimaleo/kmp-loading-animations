@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kawa.loading.kmp.enums.RotationAxis
 import com.kawa.loading.kmp.enums.TriangleCardFace
@@ -28,6 +29,7 @@ import kotlin.math.sqrt
 @Composable
 fun TriangleSpinIndicator(
     color: Color = Color.White,
+    canvasSize: Dp = 40.dp,
     animationDelay: Int = 850
 ) {
     var cardFace by remember { mutableStateOf(TriangleCardFace.AxisY) }
@@ -66,7 +68,7 @@ fun TriangleSpinIndicator(
 
     Canvas(
         modifier = Modifier
-            .size(40.dp)
+            .size(canvasSize)
             .graphicsLayer {
                 rotationX = rX
                 rotationY = rY

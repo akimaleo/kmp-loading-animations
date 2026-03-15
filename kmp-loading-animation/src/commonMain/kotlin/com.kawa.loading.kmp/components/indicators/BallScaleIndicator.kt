@@ -7,10 +7,16 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun BallScaleIndicator(
@@ -23,16 +29,18 @@ fun BallScaleIndicator(
     ballDiameter: Float = 70f
 ) {
 
-    val alpha by rememberInfiniteTransition().animateFloat(
-        initialValue = minAlpha,
-        targetValue = maxAlpha,
+    val transition = rememberInfiniteTransition()
+
+    val alpha by transition.animateFloat(
+        initialValue = maxAlpha,
+        targetValue = minAlpha,
         animationSpec = infiniteRepeatable(
             animation = tween(animationDuration, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Restart
         )
     )
 
-    val scale by rememberInfiniteTransition().animateFloat(
+    val scale by transition.animateFloat(
         initialValue = minScale,
         targetValue = maxScale,
         animationSpec = infiniteRepeatable(
@@ -45,7 +53,21 @@ fun BallScaleIndicator(
         drawCircle(
             color = color,
             radius = (ballDiameter / 2) * scale,
+            center = center,
             alpha = alpha
         )
+    }
+}
+
+@Preview
+@Composable
+fun BallScaleIndicatorPreview() {
+    Box(
+        modifier = Modifier
+            .background(Color.DarkGray)
+            .padding(40.dp)
+            .size(120.dp)
+    ) {
+        BallScaleIndicator()
     }
 }

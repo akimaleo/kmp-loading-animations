@@ -1,17 +1,18 @@
 package com.kawa.loading.kmp.components.indicators
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
@@ -22,13 +23,12 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kawa.loading.kmp.enums.DrawStyleType
 import com.kawa.loading.kmp.enums.RotationAxis
 import com.kawa.loading.kmp.enums.SquareCardFace
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun SquareSpinIndicator(
@@ -38,45 +38,37 @@ fun SquareSpinIndicator(
     style: DrawStyleType = DrawStyleType.FILL,
     penThickness: Dp = 2.dp,
 ) {
-
-    var squareCardFace by remember { mutableStateOf(SquareCardFace.AxisX) }
-    var axis by remember { mutableStateOf(RotationAxis.AxisX) }
-    val transition = rememberInfiniteTransition()
-    val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(squareCardFace) {
-        axis = squareCardFace.axis
-    }
+    var cardFace by remember { mutableStateOf(SquareCardFace.AxisX) }
+    val rotation = remember { Animatable(0f) }
 
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            while (true) {
-                delay(animationDelay.toLong())
-                squareCardFace = squareCardFace.next
-            }
+        while (true) {
+            rotation.animateTo(
+                targetValue = cardFace.angle,
+                animationSpec = tween(
+                    durationMillis = animationDelay,
+                    easing = FastOutSlowInEasing,
+                )
+            )
+            val nextFace = cardFace.next
+            rotation.snapTo(0f)
+            cardFace = nextFace
         }
     }
 
-    val rotation by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = squareCardFace.angle,
-        animationSpec = infiniteRepeatable(
-            tween(
-                durationMillis = animationDelay,
-                easing = FastOutSlowInEasing,
-            )
-        )
-    )
+    val rotationValue = rotation.value
 
-    Canvas(modifier = Modifier
-        .graphicsLayer {
-            if (axis == RotationAxis.AxisX) {
-                rotationX = rotation
-            } else {
-                rotationY = rotation
+    Canvas(
+        modifier = Modifier
+            .graphicsLayer {
+                if (cardFace.axis == RotationAxis.AxisX) {
+                    rotationX = rotationValue
+                } else {
+                    rotationY = rotationValue
+                }
+                cameraDistance = 12f * density
             }
-        }) {
-
+    ) {
         val path = Path().apply {
             addRect(
                 rect = Rect(
@@ -100,5 +92,18 @@ fun SquareSpinIndicator(
                 )
             }
         )
+    }
+}
+
+@Preview
+@Composable
+fun SquareSpinIndicatorPreview() {
+    Box(
+        modifier = Modifier
+            .background(Color.DarkGray)
+            .padding(40.dp)
+            .size(120.dp)
+    ) {
+        SquareSpinIndicator()
     }
 }

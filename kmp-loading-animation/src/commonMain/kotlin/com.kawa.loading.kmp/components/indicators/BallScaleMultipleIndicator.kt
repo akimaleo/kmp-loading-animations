@@ -6,6 +6,10 @@ import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,8 +17,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun BallScaleMultipleIndicator(
@@ -24,32 +29,41 @@ fun BallScaleMultipleIndicator(
     minScale: Float = 0f,
     maxScale: Float = 2.5f,
     rippleCount: Int = 4,
-    alpha: Float = 0.3f
+    maxAlpha: Float = 0.3f
 ) {
-
 
     val smallestBallDiameter = largestBallDiameter / rippleCount
     val diameterSteps = (largestBallDiameter - smallestBallDiameter) / rippleCount
 
-    val scales: List<Float> = (0 until rippleCount).map { index ->
+    data class RippleState(val scale: Float, val alpha: Float)
+
+    val rippleStates: List<RippleState> = (0 until rippleCount).map { index ->
         var scale by remember { mutableStateOf(minScale) }
+        var alpha by remember { mutableStateOf(maxAlpha) }
 
         LaunchedEffect(key1 = Unit) {
+            val duration = (rippleCount - index) * animationDuration / rippleCount
+            val delay = index * animationDuration / rippleCount
 
+            // Scale animation
             animate(
                 initialValue = minScale,
                 targetValue = maxScale,
                 animationSpec = infiniteRepeatable(
                     animation = tween(
-                        durationMillis = (rippleCount - index) * animationDuration / rippleCount,
-                        delayMillis = index * animationDuration / rippleCount,
+                        durationMillis = duration,
+                        delayMillis = delay,
                         easing = LinearEasing
                     ),
                     repeatMode = RepeatMode.Restart,
                 ),
-            ) { value, _ -> scale = value }
+            ) { value, _ ->
+                scale = value
+                // Fade out as the ripple expands so it doesn't pop
+                alpha = maxAlpha * (1f - value / maxScale)
+            }
         }
-        scale
+        RippleState(scale, alpha)
     }
 
     Canvas(modifier = Modifier) {
@@ -57,10 +71,23 @@ fun BallScaleMultipleIndicator(
             val radius = (largestBallDiameter / 2) - (index * (diameterSteps / 2))
             drawCircle(
                 color = color,
-                center = Offset(size.width / 2 + largestBallDiameter, size.height / 2),
-                radius = radius * scales[index],
-                alpha = alpha
+                center = center,
+                radius = radius * rippleStates[index].scale,
+                alpha = rippleStates[index].alpha
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun BallScaleMultipleIndicatorPreview() {
+    Box(
+        modifier = Modifier
+            .background(Color.DarkGray)
+            .padding(40.dp)
+            .size(120.dp)
+    ) {
+        BallScaleMultipleIndicator()
     }
 }

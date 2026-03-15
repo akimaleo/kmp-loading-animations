@@ -11,16 +11,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.unit.sp
 import kotlin.math.ceil
 
 private val INDICATOR_NATIVE_SIZE = 200.dp
@@ -53,7 +58,7 @@ private fun optimalGrid(
 @Preview
 @Composable
 fun LoadingShowcase() {
-    val indicators = indicatorsCatalog
+    val indicators = indicatorsCatalog()
 
     BoxWithConstraints(
         modifier = Modifier
@@ -75,6 +80,9 @@ fun LoadingShowcase() {
         // Scale factor: shrink (or grow) the indicator's native drawing to fit
         val density = LocalDensity.current
         val scaleFactor = with(density) { usableCell.toPx() / INDICATOR_NATIVE_SIZE.toPx() }
+
+        // Label font size scales with cell width, clamped to a reasonable range
+        val labelFontSize = (cellWidth.value / 12).coerceIn(6f, 14f).sp
 
         Column(modifier = Modifier.fillMaxSize()) {
             for (row in 0 until rows) {
@@ -99,14 +107,31 @@ fun LoadingShowcase() {
                             contentAlignment = Alignment.Center
                         ) {
                             if (index < indicators.size) {
-                                Box(
-                                    modifier = Modifier.graphicsLayer {
-                                        scaleX = scaleFactor
-                                        scaleY = scaleFactor
-                                    },
-                                    contentAlignment = Alignment.Center
+                                val (type, indicator) = indicators[index]
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
                                 ) {
-                                    indicators[index]()
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .graphicsLayer {
+                                                scaleX = scaleFactor
+                                                scaleY = scaleFactor
+                                            },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        indicator()
+                                    }
+                                    Text(
+                                        text = type.displayName,
+                                        color = Color.White.copy(alpha = 0.7f),
+                                        fontSize = labelFontSize,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.padding(top = 2.dp)
+                                    )
                                 }
                             }
                         }
@@ -116,4 +141,3 @@ fun LoadingShowcase() {
         }
     }
 }
-

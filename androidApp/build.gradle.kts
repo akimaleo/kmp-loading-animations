@@ -44,4 +44,5 @@ android {
 }
 dependencies {
     debugImplementation(libs.ui.tooling)
+    implementation(libs.ui.tooling.preview)
 }

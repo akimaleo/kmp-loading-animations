@@ -78,21 +78,18 @@ jobs:
         run: ./gradlew :kmp-loading-animation:assemble --no-configuration-cache
 
       - name: Publish to Maven Central
-        run: ./gradlew :kmp-loading-animation:publishAllPublicationsToMavenCentralRepository --no-configuration-cache
+        run: ./gradlew :kmp-loading-animation:publishToMavenCentral --no-configuration-cache
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
 
       - name: Summary
         run: |
-          echo "## ✅ Published to Maven Central" >> $GITHUB_STEP_SUMMARY
+          echo "## Published to Maven Central" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Version: \`${{ needs.release.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
-          echo "1. Go to [Sonatype OSS](https://s01.oss.sonatype.org/)" >> $GITHUB_STEP_SUMMARY
-          echo "2. Log in → Staging Repositories" >> $GITHUB_STEP_SUMMARY
-          echo "3. Close and Release the repository" >> $GITHUB_STEP_SUMMARY
+          echo "Artifact will appear at https://central.sonatype.com/artifact/io.github.akimaleo/kmp-loading-animation within ~15-30 minutes." >> $GITHUB_STEP_SUMMARY

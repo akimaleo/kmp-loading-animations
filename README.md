@@ -33,7 +33,7 @@ Add the dependency to your `commonMain` source set:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.akimaleo:kmp-loading-animation:2.0.4")
+            implementation("io.github.akimaleo:kmp-loading-animation:2.0.5")
         }
     }
 }
